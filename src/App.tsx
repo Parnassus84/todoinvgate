@@ -1,10 +1,10 @@
 import React from 'react';
-import { Todo } from './components/Todo/Todo';
+import { AppRoutes } from './screens/routes/app-routes';
 
 function App() {
   return (
     <>
-      <Todo />
+      <AppRoutes />
     </>
   );
 }
