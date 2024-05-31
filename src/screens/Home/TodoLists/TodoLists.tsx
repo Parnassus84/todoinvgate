@@ -8,15 +8,11 @@ interface Props {
   todos: Array<Todo>;
 }
 
-const test: Todo = {
-  name: 'Todo 1',
-  list: []
-}
 
 export const TodoLists = ({ todos }: Props) => {
   return (
     <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
-      <TodoListItem todo={test} />
+      {todos.map((todo: Todo) => <TodoListItem todo={todo} key={todo.id} />)}      
     </List>
   )
 }

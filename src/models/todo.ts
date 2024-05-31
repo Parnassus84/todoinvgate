@@ -1,6 +1,7 @@
 import { Task } from "./task";
 
 export interface Todo {
+  id: number;
   name: string;
-  list: Array<Task>
+  tasks: Array<Task>
 }
