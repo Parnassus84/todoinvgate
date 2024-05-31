@@ -1,17 +1,30 @@
-import React, { useEffect } from 'react';
-import { Typography, Box } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import { Typography, Box, Button } from '@mui/material';
 import { Header } from '../Shared';
 import { TodoLists } from './TodoLists/TodoLists';
-import { useTodo } from '../../contexts/TodoState';
+import { ModalNewTodo } from './ModalNewTodo/ModalNewTodo';
+import { IForm } from './models';
+import { useTodo } from '../../contexts/context';
+import { localStorageService } from '../../services/local-storage.service';
+import { TodoStoreFacade } from '../../contexts/facade';
 
 
 export const Home = () => {
-  const { todos, getTodos } = useTodo();
+  const { state: {todos}, dispatch } = useTodo();
+
+
+  const [showModal, setShowModal] = useState(false);
 
   useEffect( () => {
-    getTodos();
+   const todos = localStorageService.getTodos();
+   dispatch(TodoStoreFacade.getTodos(todos));  
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  },[]);
+  },[]); 
+
+  const onSubmit = ({ name }: IForm) => {
+    dispatch(TodoStoreFacade.addTodo(name));     
+    setShowModal(false);
+  }
 
   return (
     <>
@@ -24,6 +37,7 @@ export const Home = () => {
         >
           TO-DOs
         </Typography>
+        <Button color="inherit" onClick={() => setShowModal(true)}>Nuevo</Button> 
       </Header>
       <Box
         component="main"
@@ -33,6 +47,7 @@ export const Home = () => {
           <TodoLists todos={todos} />
         </Box>
       </Box>
+      <ModalNewTodo showModal={showModal} handleClose={() => setShowModal(false)} submit={onSubmit} />
     </>
   );
 };

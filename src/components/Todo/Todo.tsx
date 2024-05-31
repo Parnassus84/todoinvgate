@@ -1,9 +1,6 @@
-import React, { useState } from 'react';
-import { Header } from '../Header/Header';
+import React from 'react';
 import { AddTask } from '../AddTask/AddTask';
-import { localStorageService } from '../../services/local-storage.service';
 import { TodoList } from '../TodoList/TodoList';
-import { Task } from '../../models/task';
 import { FilterTask } from '../Filter/FilterTask';
 
 export const Todo = () => {
@@ -33,10 +30,7 @@ export const Todo = () => {
   };
 
   return (
-    <div className="w-[500px] p-10 self-center">
-      <Header className="mb-3 text-xl text-center">
-        <h1>TO-DO List</h1>
-      </Header>
+    <div className="w-[500px] p-10 self-center">      
       <AddTask className="mb-3 text-xl text-center" addTask={onAddTask} />
       <FilterTask className="mb-3 text-xl" filterBy={onFilterBy} />
       <TodoList
