@@ -7,7 +7,6 @@ import {
   GetTodos,
   RemoveTask,
   RemoveTodo,
-  SelectedTodo,
   TodoActionTypes,
 } from './actions';
 
@@ -46,9 +45,4 @@ export const TodoStoreFacade = {
     type: TodoActionTypes.COMPLETED_TASK,
     payload: { todoId, taskId },
   }),
-
-  selectedTodo: (todoId: number): SelectedTodo => ({
-    type: TodoActionTypes.SELECTED_TODO,
-    payload: { todoId },
-  }),  
 };

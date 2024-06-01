@@ -11,6 +11,4 @@ export const TodoContext = createContext<{
   dispatch: () => undefined,
 });
 
-
 export const useTodo = () => useContext(TodoContext);
-

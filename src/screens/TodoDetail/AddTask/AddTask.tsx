@@ -1,11 +1,11 @@
-import React, { ComponentProps, FC, useRef } from 'react';
+import React, { ComponentProps, FC } from 'react';
 import { TextField } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { formSchema } from './schema';
 
 interface Props extends ComponentProps<any> {
-  addTask: (task: string) => void;
+  addTask: (name: string) => void;
 }
 
 interface IForm {
@@ -13,11 +13,10 @@ interface IForm {
 }
 
 export const AddTask: FC<Props> = ({ addTask, ...restProps }) => {
-  const refName = useRef<any>();
-
   const {
     register,
     handleSubmit,
+    setValue,
     watch,
     formState: { errors },
   } = useForm<IForm>({
@@ -29,7 +28,7 @@ export const AddTask: FC<Props> = ({ addTask, ...restProps }) => {
 
   const onSubmit = ({ name }: IForm) => {
     addTask(name);
-    refName && (refName.current.value = '');
+    setValue('name', '');
   };
 
   return (
@@ -37,7 +36,6 @@ export const AddTask: FC<Props> = ({ addTask, ...restProps }) => {
       <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
         <TextField
           {...register('name')}
-          inputRef={refName}
           label="Agrega una tarea"
           error={!!watchValue.name && !!errors.name}
           helperText={errors.name?.message}
