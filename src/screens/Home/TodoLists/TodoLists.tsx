@@ -19,7 +19,8 @@ export const TodoLists = ({ todos, onEdit, onDeleted, onView }: Props) => {
           key={todo.id}
           edit={() => onEdit(todo)}
           deleted={() => onDeleted(todo)}
-          view={() => onView(todo.id)}
+          view={() => onView(todo.id)} 
+          last={todos?.length === todos.indexOf(todo) + 1}   
         />
       ))}
     </List>

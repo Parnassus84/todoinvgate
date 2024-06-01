@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Typography, Box, Button } from '@mui/material';
 import { Header } from '../Shared';
 import { TodoLists } from './TodoLists/TodoLists';
-import { ModalTodo } from './ModalNewTodo/ModalTodo';
+import { ModalTodo } from './ModalTodo/ModalTodo';
 import { IForm } from './models';
 import { useTodo } from '../../contexts/context';
 import { TodoStoreFacade } from '../../contexts/facade';

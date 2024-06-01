@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -23,8 +23,7 @@ export default function AlertDialog({
     <Dialog
       open={showModal}
       onClose={handleClose}
-      aria-labelledby="alert-dialog-title"
-      aria-describedby="alert-dialog-description"
+      aria-labelledby="alert-dialog-title"     
     >
       <DialogTitle id="alert-dialog-title">
         {isTodo

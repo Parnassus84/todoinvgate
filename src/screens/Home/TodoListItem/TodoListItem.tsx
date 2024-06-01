@@ -12,6 +12,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import { Todo } from '../../../models';
 interface Props {
   todo: Todo;
+  last?: boolean;
   deleted?: () => void;
   edit?: () => void;
   view?: () => void;
@@ -22,6 +23,7 @@ export const TodoListItem = ({
   edit,
   deleted,
   view,
+  last
 }: Props) => {
   return (
     <>
@@ -57,7 +59,7 @@ export const TodoListItem = ({
           <DeleteIcon color="primary" fontSize="medium" />
         </IconButton>
       </ListItem>
-      <Divider variant="middle" component="li" />
+      { !last && (<Divider variant="middle" component="li" />) }
     </>
   );
 };

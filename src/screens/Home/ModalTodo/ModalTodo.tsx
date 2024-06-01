@@ -38,10 +38,11 @@ export const ModalTodo = ({ showModal, handleClose, submit, todo }: Props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [todo]);
 
+
   return (
     <Dialog open={showModal} onClose={handleClose}>
       <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
-        {todo?.id ? `Editar TO-DO ${todo.id}` : 'Nuevo TO-DO'}
+        {todo?.name ? `Editar TO-DO ${todo.name}` : 'Nuevo TO-DO'}
       </DialogTitle>
       <IconButton
         aria-label="close"

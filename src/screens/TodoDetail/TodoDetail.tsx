@@ -13,13 +13,11 @@ export const TodoDetail = () => {
   const { id } = useParams();
   const { state, dispatch } = useTodo();
   const [tasks, setTasks] = useState<Array<Task>>();
-  const [taskIdDelete, setTaskIdDelete] = useState<number | undefined>(
-    undefined
-  );
+  const [taskDelete, setTaskDelete] = useState<Task>();
   const [showAlertModal, setShowAlertModal] = useState(false);
   const navigate = useNavigate();
   const selectedTodo = state.todos.find((todo) => todo.id === Number(id));
-  const task = selectedTodo?.tasks?.find((task) => task.id === taskIdDelete);
+ 
 
   useEffect(() => {
     if (selectedTodo) {
@@ -53,15 +51,16 @@ export const TodoDetail = () => {
   };
 
   const removeTask = (taskId: number) => {
+    const task = selectedTodo?.tasks?.find((task) => task.id === taskId);
+    setTaskDelete(task);
     setShowAlertModal(true);
-    setTaskIdDelete(taskId);
   };
 
   const confirmDelete = () => {
-    id &&
-      taskIdDelete &&
-      dispatch(TodoStoreFacade.removeTask(+id, taskIdDelete));
     setShowAlertModal(false);
+    id &&
+      taskDelete &&
+      dispatch(TodoStoreFacade.removeTask(+id, taskDelete.id));
   };
 
   const gotHome = () => {
@@ -102,7 +101,7 @@ export const TodoDetail = () => {
         handleClose={() => setShowAlertModal(false)}
         confirm={confirmDelete}
         isTodo={false}
-        name={task?.name}
+        name={taskDelete?.name}
       />
     </>
   );
