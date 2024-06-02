@@ -2,14 +2,14 @@ import React from 'react';
 import { AddTask } from '../AddTask/AddTask';
 import { TodoList } from '../TodoList/TodoList';
 import { FilterTask } from '../Filter/FilterTask';
-import { Task } from '../../../models';
+import { ITask } from '../../../models';
 import { FilterBy } from '../todo-detail.enum';
 
 interface Props {
-  tasks: Array<Task>;
+  tasks: Array<ITask>;
   onAddTask: (name: string) => void;
   onRemoveTask: (id: string) => void;
-  onCheckedTask: (id: string) => void;
+  onCheckedTask: (task: ITask) => void;
   onFilterBy: (filter: FilterBy) => void;
 }
 

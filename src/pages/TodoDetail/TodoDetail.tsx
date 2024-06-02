@@ -1,42 +1,62 @@
-import React, { useEffect, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { Header } from '../Shared';
-import { Box, Button, Typography } from '@mui/material';
+import { Box, Button, CircularProgress, Typography } from '@mui/material';
 import { TodoComponent } from './TodoComponent/TodoComponent';
 import { useTodo } from '../../contexts/context';
 import { useNavigate, useParams } from 'react-router-dom';
 import { TodoStoreFacade } from '../../contexts/facade';
-import { Task } from '../../models';
+import { ITask } from '../../models';
 import AlertDialog from '../Shared/components/AlertDialog/AlertDialog';
 import { FilterBy } from './todo-detail.enum';
+import { ISaveTaskParams } from '../../services/task/interface/task.dto';
+import { taskService } from '../../services/task/task.service';
+import { useTasks } from '../../hooks/useTasks';
 
-export const TodoDetail = () => {
-  const { id } = useParams();
+
+const TodoDetailPage: FC = () => {
+  const { id = '' } = useParams<{ id: string }>();
   const { state, dispatch } = useTodo();
-  const [tasks, setTasks] = useState<Array<Task>>();
-  const [taskDelete, setTaskDelete] = useState<Task>();
+  const [taskDelete, setTaskDelete] = useState<ITask>();
   const [showAlertModal, setShowAlertModal] = useState(false);
   const navigate = useNavigate();
   const selectedTodo = state.todos.find((todo) => todo.id === id);
- 
+  const [tasks, setTasks] = useState<Array<ITask>>([]);
+
+  const {tasks: tasksEntries, loading} = useTasks({todoId: id});
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+
+
+  useEffect(() => {      
+    if (selectedTodo && !selectedTodo?.tasks && tasksEntries) {         
+      dispatch(TodoStoreFacade.getTasks(id, tasksEntries));    
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[selectedTodo, tasksEntries]);
 
   useEffect(() => {
-    if (selectedTodo) {
-      setTasks(selectedTodo.tasks);
-    }
-
+    selectedTodo?.tasks && setTasks(selectedTodo.tasks);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state.todos]);
+  }, [selectedTodo?.tasks]);
 
-  const addTask = (name: string) => {
-    id && dispatch(TodoStoreFacade.addTask(id, name));
+  const addTask = async (name: string) => {
+    if (!name) return;
+    const newTask: ISaveTaskParams = {
+      name,
+      checked: false,
+      todoId: id || '',
+    };
+
+    const taskResponse = await taskService.saveTask(newTask);
+    id && dispatch(TodoStoreFacade.addTask(id, taskResponse));
   };
 
-  const checkedTask = (taskId: string) => {
-    id && dispatch(TodoStoreFacade.completedTask(id, taskId));
+  const checkedTask = async (task: ITask) => {
+    const tasksResponse = await taskService.completedTask(task);
+    id && dispatch(TodoStoreFacade.completedTask(id, tasksResponse.id));
   };
 
   const filterBy = (filter: FilterBy) => {
-    const filteredTasks = selectedTodo?.tasks?.filter((item: Task) => {
+    const filteredTasks = selectedTodo?.tasks?.filter((item: ITask) => {
       switch (filter) {
         case FilterBy.PENDING:
           return !item.checked;
@@ -56,11 +76,10 @@ export const TodoDetail = () => {
     setShowAlertModal(true);
   };
 
-  const confirmDelete = () => {
+  const confirmDelete = async () => {
+    const tasksResponse = await taskService.deleteTask(taskDelete?.id as string);
+    id && taskDelete && dispatch(TodoStoreFacade.removeTask(id, tasksResponse.id));
     setShowAlertModal(false);
-    id &&
-      taskDelete &&
-      dispatch(TodoStoreFacade.removeTask(id, taskDelete.id));
   };
 
   const gotHome = () => {
@@ -69,6 +88,10 @@ export const TodoDetail = () => {
 
   return (
     <>
+    {loading ? (
+        <CircularProgress />
+    ) : (
+      <>
       <Header>
         <Typography
           variant="h6"
@@ -88,7 +111,7 @@ export const TodoDetail = () => {
       >
         <Box component="div" sx={{ width: '60%' }}>
           <TodoComponent
-            tasks={tasks || []}
+            tasks={tasks}
             onAddTask={addTask}
             onCheckedTask={checkedTask}
             onFilterBy={filterBy}
@@ -103,6 +126,10 @@ export const TodoDetail = () => {
         isTodo={false}
         name={taskDelete?.name}
       />
+      </>
+    )}
     </>
   );
 };
+
+export default TodoDetailPage;

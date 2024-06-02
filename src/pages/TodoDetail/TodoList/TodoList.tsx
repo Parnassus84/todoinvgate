@@ -1,11 +1,11 @@
 import React, { ComponentProps, FC } from 'react';
 import { TodoItem } from '../TodoItem/TodoItem';
-import { Task } from '../../../models/task';
+import { ITask } from '../../../models/task';
 
 interface Props extends ComponentProps<any> {
-  list: Array<Task>;
+  list: Array<ITask>;
   onDeleted: (id: string) => void;
-  onChecked: (id: string) => void;
+  onChecked: (task: ITask) => void;
 }
 
 export const TodoList: FC<Props> = ({
@@ -16,13 +16,13 @@ export const TodoList: FC<Props> = ({
 }) => {
   return (
     <div {...restProps}>
-      {list.map(({ id, name, checked }: Task, index: number) => (
+      {list.map((task: ITask, index: number) => (
         <TodoItem
           key={`task-${index}`}
-          name={name}
-          deleted={() => onDeleted(id)}
-          isChecked={checked}
-          onChecked={() => onChecked(id)}
+          name={task.name}
+          deleted={() => onDeleted(task.id)}
+          isChecked={task.checked}
+          onChecked={() => onChecked(task)}
         />
       ))}
     </div>

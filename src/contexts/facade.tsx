@@ -1,24 +1,29 @@
-import { ITodo } from '../models';
+import { ITask, ITodo } from '../models';
 import {
   AddTask,
   AddTodo,
   CompletedTask,
   EditTodo,
+  GetTasks,
   GetTodos,
+  GetTodosSuccess,
   RemoveTask,
   RemoveTodo,
   TodoActionTypes,
 } from './actions';
 
 export const TodoStoreFacade = {
-  getTodos: (todos: Array<ITodo>): GetTodos => ({
-    type: TodoActionTypes.GET_TODOS,
-    payload: todos,
+  getTodos: (): GetTodos => ({
+    type: TodoActionTypes.GET_TODOS,    
+  }),
+  getTodosSuccess: (todos: Array<ITodo>): GetTodosSuccess => ({
+    type: TodoActionTypes.GET_TODOS_SUCCESS,
+    payload: {todos},
   }),
 
-  addTodo: (name: string): AddTodo => ({
+  addTodo: (todo: ITodo): AddTodo => ({
     type: TodoActionTypes.ADD_TODO,
-    payload: { name },
+    payload: { todo },
   }),
 
   removeTodo: (todoId: string): RemoveTodo => ({
@@ -31,9 +36,14 @@ export const TodoStoreFacade = {
     payload: { todoId, name },
   }),
 
-  addTask: (todoId: string, name: string): AddTask => ({
+  getTasks: (todoId: string, tasks: Array<ITask>): GetTasks => ({
+    type: TodoActionTypes.GET_TASKS,
+    payload: { todoId, tasks },
+  }),
+
+  addTask: (todoId: string, task: ITask): AddTask => ({
     type: TodoActionTypes.ADD_TASK,
-    payload: { todoId, name },
+    payload: { todoId, task },
   }),
 
   removeTask: (todoId: string, taskId: string): RemoveTask => ({
