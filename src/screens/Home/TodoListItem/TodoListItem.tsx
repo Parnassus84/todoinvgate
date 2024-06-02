@@ -9,9 +9,9 @@ import {
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
-import { Todo } from '../../../models';
+import { ITodo } from '../../../models';
 interface Props {
-  todo: Todo;
+  todo: ITodo;
   last?: boolean;
   deleted?: () => void;
   edit?: () => void;

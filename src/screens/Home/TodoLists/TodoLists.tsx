@@ -1,22 +1,22 @@
 import React from 'react';
 import { List } from '@mui/material';
-import { Todo } from '../../../models';
+import { ITodo } from '../../../models';
 import { TodoListItem } from '../TodoListItem/TodoListItem';
 
 interface Props {
-  todos: Array<Todo>;
-  onEdit: (todo: Todo) => void;
-  onDeleted: (todo: Todo) => void;
-  onView: (id: number) => void;
+  todos: Array<ITodo>;
+  onEdit: (todo: ITodo) => void;
+  onDeleted: (todo: ITodo) => void;
+  onView: (id: string) => void;
 }
 
 export const TodoLists = ({ todos, onEdit, onDeleted, onView }: Props) => {
   return (
     <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
-      {todos.map((todo: Todo) => (
+      {todos.map((todo: ITodo, index) => (
         <TodoListItem
           todo={todo}
-          key={todo.id}
+          key={`${todo.id}${index}`}
           edit={() => onEdit(todo)}
           deleted={() => onDeleted(todo)}
           view={() => onView(todo.id)} 

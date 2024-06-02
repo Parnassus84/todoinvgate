@@ -1,7 +1,7 @@
 import { Task } from './task';
 
-export interface Todo {
-  id: number;
+export interface ITodo {
+  id: string;
   name: string;
   tasks: Array<Task>;
 }

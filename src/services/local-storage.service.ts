@@ -1,11 +1,11 @@
-import { Todo } from "../models";
+import { ITodo } from "../models";
 
 export const localStorageService = {
-  getTodos(): Array<Todo> {
+  getTodos(): Array<ITodo> {
     return JSON.parse(localStorage.getItem('todos') || '[]');
   }, 
 
-  setTodos(todos: Array<Todo>): void {
+  setTodos(todos: Array<ITodo>): void {
     localStorage.setItem('todos', JSON.stringify(todos));  
   }, 
 

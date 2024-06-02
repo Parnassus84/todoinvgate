@@ -4,8 +4,8 @@ import { Task } from '../../../models/task';
 
 interface Props extends ComponentProps<any> {
   list: Array<Task>;
-  onDeleted: (id: number) => void;
-  onChecked: (id: number) => void;
+  onDeleted: (id: string) => void;
+  onChecked: (id: string) => void;
 }
 
 export const TodoList: FC<Props> = ({

@@ -5,11 +5,11 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import { formSchema } from './schema';
 import { IForm } from '../models';
-import { Todo } from '../../../models';
+import { ITodo } from '../../../models';
 
 interface Props {
   showModal: boolean;
-  todo?: Todo;
+  todo?: ITodo;
   submit: (form: IForm) => void;
   handleClose: () => void;
 }

@@ -16,7 +16,7 @@ export const TodoDetail = () => {
   const [taskDelete, setTaskDelete] = useState<Task>();
   const [showAlertModal, setShowAlertModal] = useState(false);
   const navigate = useNavigate();
-  const selectedTodo = state.todos.find((todo) => todo.id === Number(id));
+  const selectedTodo = state.todos.find((todo) => todo.id === id);
  
 
   useEffect(() => {
@@ -28,11 +28,11 @@ export const TodoDetail = () => {
   }, [state.todos]);
 
   const addTask = (name: string) => {
-    id && dispatch(TodoStoreFacade.addTask(+id, name));
+    id && dispatch(TodoStoreFacade.addTask(id, name));
   };
 
-  const checkedTask = (taskId: number) => {
-    id && dispatch(TodoStoreFacade.completedTask(+id, taskId));
+  const checkedTask = (taskId: string) => {
+    id && dispatch(TodoStoreFacade.completedTask(id, taskId));
   };
 
   const filterBy = (filter: FilterBy) => {
@@ -50,7 +50,7 @@ export const TodoDetail = () => {
     setTasks(filteredTasks || []);
   };
 
-  const removeTask = (taskId: number) => {
+  const removeTask = (taskId: string) => {
     const task = selectedTodo?.tasks?.find((task) => task.id === taskId);
     setTaskDelete(task);
     setShowAlertModal(true);
@@ -60,7 +60,7 @@ export const TodoDetail = () => {
     setShowAlertModal(false);
     id &&
       taskDelete &&
-      dispatch(TodoStoreFacade.removeTask(+id, taskDelete.id));
+      dispatch(TodoStoreFacade.removeTask(id, taskDelete.id));
   };
 
   const gotHome = () => {

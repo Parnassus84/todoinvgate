@@ -8,8 +8,8 @@ import { FilterBy } from '../todo-detail.enum';
 interface Props {
   tasks: Array<Task>;
   onAddTask: (name: string) => void;
-  onRemoveTask: (id: number) => void;
-  onCheckedTask: (id: number) => void;
+  onRemoveTask: (id: string) => void;
+  onCheckedTask: (id: string) => void;
   onFilterBy: (filter: FilterBy) => void;
 }
 

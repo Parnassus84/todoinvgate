@@ -6,7 +6,7 @@ import { ModalTodo } from './ModalTodo/ModalTodo';
 import { IForm } from './models';
 import { useTodo } from '../../contexts/context';
 import { TodoStoreFacade } from '../../contexts/facade';
-import { Todo } from '../../models';
+import { ITodo } from '../../models';
 import AlertDialog from '../Shared/components/AlertDialog/AlertDialog';
 import { useNavigate } from 'react-router-dom';
 
@@ -15,8 +15,8 @@ export const Home = () => {
     state: { todos },
     dispatch,
   } = useTodo();
-  const [todoEdit, setTodoEdit] = useState<Todo | undefined>(undefined);
-  const [todoDelete, setTodoDelete] = useState<Todo | undefined>(undefined);
+  const [todoEdit, setTodoEdit] = useState<ITodo | undefined>(undefined);
+  const [todoDelete, setTodoDelete] = useState<ITodo | undefined>(undefined);
   const navigate = useNavigate();
 
   const [showModal, setShowModal] = useState(false);
@@ -29,7 +29,7 @@ export const Home = () => {
     setShowModal(false);
   };
 
-  const removeTodo = (todo: Todo) => {
+  const removeTodo = (todo: ITodo) => {
     setShowAlertModal(true);
     setTodoDelete(todo);
   };
@@ -39,7 +39,7 @@ export const Home = () => {
     setShowAlertModal(false);
   };
 
-  const editTodo = (todo: Todo) => {
+  const editTodo = (todo: ITodo) => {
     setTodoEdit(todo);
     setShowModal(true);
   };
@@ -49,7 +49,7 @@ export const Home = () => {
     setTodoEdit(undefined);
   };
 
-  const viewTodo = (id: number) => {
+  const viewTodo = (id: string) => {
     navigate(`/todo/${id}`);
   };
 

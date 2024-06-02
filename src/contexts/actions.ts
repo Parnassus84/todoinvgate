@@ -1,4 +1,4 @@
-import { Todo } from '../models';
+import { ITodo } from '../models';
 
 export enum TodoActionTypes {
   GET_TODOS = 'GET_TODOS',
@@ -12,7 +12,7 @@ export enum TodoActionTypes {
 
 export interface GetTodos {
   type: TodoActionTypes.GET_TODOS;
-  payload: Array<Todo>;
+  payload: Array<ITodo>;
 }
 
 export interface AddTodo {
@@ -22,27 +22,27 @@ export interface AddTodo {
 
 export interface RemoveTodo {
   type: TodoActionTypes.REMOVE_TODO;
-  payload: { todoId: number };
+  payload: { todoId: string };
 }
 
 export interface EditTodo {
   type: TodoActionTypes.EDIT_TODO;
-  payload: { todoId: number; name: string };
+  payload: { todoId: string; name: string };
 }
 
 export interface AddTask {
   type: TodoActionTypes.ADD_TASK;
-  payload: { todoId: number; name: string };
+  payload: { todoId: string; name: string };
 }
 
 export interface CompletedTask {
   type: TodoActionTypes.COMPLETED_TASK;
-  payload: { todoId: number; taskId: number };
+  payload: { todoId: string; taskId: string };
 }
 
 export interface RemoveTask {
   type: TodoActionTypes.REMOVE_TASK;
-  payload: { todoId: number; taskId: number };
+  payload: { todoId: string; taskId: string };
 }
 
 export type TodoActions =

@@ -1,7 +1,7 @@
-import { Todo } from '../models';
+import { ITodo } from '../models';
 
 export interface TodoState {
-  todos: Array<Todo>;
+  todos: Array<ITodo>;
 }
 
 export const initialState: TodoState = {

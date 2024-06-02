@@ -1,5 +1,7 @@
-import { Task, Todo } from '../models';
+import { Task, ITodo } from '../models';
 import { localStorageService } from '../services/local-storage.service';
+import { ISaveTodoParams } from '../services/todo/interfaces/todo.dto';
+import { todoService } from '../services/todo/todo.service';
 import { TodoActionTypes, TodoActions } from './actions';
 import { TodoState } from './state';
 
@@ -11,60 +13,58 @@ export function todoReducer(state: TodoState, action: TodoActions): TodoState {
         todos: action.payload,
       };
     case TodoActionTypes.ADD_TODO:
-      const newTodo: Todo = {
-        id: state.todos[0] ? state.todos[0].id + 1 : 1,
-        name: action.payload.name,
-        tasks: [],
-      };
+      const newTodo: ISaveTodoParams = {        
+        name: action.payload.name,        
+      };      
       return {
         ...state,
-        todos: saveTodos([newTodo, ...state.todos]),
+        todos: saveTodos([...state.todos, saveTodo(newTodo)]),
       };
 
     case TodoActionTypes.EDIT_TODO:
       const index = state.todos.findIndex(
-        (item: Todo) => item.id === action.payload.todoId
+        (item: ITodo) => item.id === action.payload.todoId
       );
       if (index !== -1) {
         const newTodos = [...state.todos];
         newTodos[index].name = action.payload.name;
+        updateTodo(newTodos[index]);
         return {
           ...state,
-          todos: saveTodos(newTodos),
+          todos: newTodos,
         };
       }
       return state;
     case TodoActionTypes.REMOVE_TODO:
       const newTodos = state.todos.filter(
-        (item: Todo) => item.id !== action.payload.todoId
+        (item: ITodo) => item.id !== action.payload.todoId
       );
+      deleteTodo(action.payload.todoId);
       return {
         ...state,
         todos: saveTodos(newTodos),
       };
-    case TodoActionTypes.ADD_TASK:
-      const indexTodo = state.todos.findIndex(
-        (item: Todo) => item.id === action.payload.todoId
-      );
-      if (indexTodo !== -1) {
-        const newTodos = [...state.todos];
-        const newTask = {
-          id: newTodos[indexTodo].tasks[0]
-            ? newTodos[indexTodo].tasks[0].id + 1
-            : 1,
-          name: action.payload.name,
-          checked: false,
-        };
-        newTodos[indexTodo].tasks = [newTask, ...state.todos[indexTodo].tasks];
-        return {
-          ...state,
-          todos: saveTodos(newTodos),
-        };
-      }
-      return state;
+    // case TodoActionTypes.ADD_TASK:
+    //   const indexTodo = state.todos.findIndex(
+    //     (item: ITodo) => item.id === action.payload.todoId
+    //   );
+    //   if (indexTodo !== -1) {
+    //     const newTodos = [...state.todos];
+    //     const newTask = {
+    //       id: newTodos[indexTodo].tasks[0],
+    //       name: action.payload.name,
+    //       checked: false,
+    //     };
+    //     newTodos[indexTodo].tasks = [newTask, ...state.todos[indexTodo].tasks];
+    //     return {
+    //       ...state,
+    //       todos: saveTodos(newTodos),
+    //     };
+    //   }
+    //   return state;
     case TodoActionTypes.REMOVE_TASK:
       const indexTask = state.todos.findIndex(
-        (item: Todo) => item.id === action.payload.todoId
+        (item: ITodo) => item.id === action.payload.todoId
       );
       if (indexTask !== -1) {
         const newTodos = [...state.todos];
@@ -79,7 +79,7 @@ export function todoReducer(state: TodoState, action: TodoActions): TodoState {
       return state;
     case TodoActionTypes.COMPLETED_TASK:
       const indexTodoTask = state.todos.findIndex(
-        (item: Todo) => item.id === action.payload.todoId
+        (item: ITodo) => item.id === action.payload.todoId
       );
       if (indexTodoTask !== -1) {
         const newTodos = [...state.todos];
@@ -105,7 +105,22 @@ export function todoReducer(state: TodoState, action: TodoActions): TodoState {
   }
 }
 
-const saveTodos = (todos: Array<Todo>) => {
+const saveTodos = (todos: Array<ITodo>) => {
   localStorageService.setTodos(todos);
   return todos;
 };
+
+const saveTodo = (todo: ISaveTodoParams) => {  
+  todoService.saveTodo(todo);
+  return todo as ITodo;
+} 
+const deleteTodo = (id: string) => {  
+  todoService.deleteTodo(id);
+  return true;
+} 
+
+const updateTodo = (todo: ITodo) => {
+  const {id, name} = todo;
+ todoService.updateTodo(id, name);
+  return todo;
+}
