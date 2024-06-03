@@ -3,17 +3,26 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { useTodos } from '../../hooks/useTodos';
 import { useTodo } from '../../contexts/context';
 import { TodoStoreFacade } from '../../contexts/facade';
+import { useAppDispatch } from '../../redux';
+import { getTodosAction } from '../../redux/todos';
 
 const HomePage = lazy(async() => await import('../Home/Home'));
 const TodoDetailPage = lazy(async() => await import('../TodoDetail/TodoDetail'));
 
 export const AppRoutes = () => {
-  const { dispatch } = useTodo();
+  const { dispatch: dispatchContext } = useTodo();
+  const dispatch = useAppDispatch();
   const { todos } = useTodos();
   useEffect(() => {  
-    dispatch(TodoStoreFacade.getTodosSuccess(todos));
+    dispatchContext(TodoStoreFacade.getTodosSuccess(todos));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [todos]);
+
+
+  useEffect(() => {
+    dispatch(getTodosAction());
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[])
 
   return (
     <>

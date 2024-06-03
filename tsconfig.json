@@ -6,6 +6,11 @@
       "dom.iterable",
       "esnext"
     ],
+    "types": [
+      "react",
+      "jest",
+      "@testing-library/jest-dom"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -20,6 +25,10 @@
     "noEmit": true,
     "jsx": "react-jsx"
   },
+  "exclude": [
+    "dist",
+    "node_modules"
+  ],
   "include": [
     "src"
   ]
