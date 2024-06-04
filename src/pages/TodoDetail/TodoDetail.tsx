@@ -8,7 +8,7 @@ import { TodoStoreFacade } from '../../contexts/facade';
 import { ITask } from '../../models';
 import AlertDialog from '../../shared/components/AlertDialog/AlertDialog';
 import { FilterBy } from './todo-detail.enum';
-import { ISaveTaskParams } from '../../services/task/interface/task.dto';
+import { IAddTaskParams } from '../../services/task/interface/task.dto';
 import { taskService } from '../../services/task/task.service';
 import { useTasks } from '../../hooks/useTasks';
 
@@ -38,13 +38,13 @@ const TodoDetailPage: FC = () => {
 
   const addTask = async (name: string) => {
     if (!name) return;
-    const newTask: ISaveTaskParams = {
+    const newTask: IAddTaskParams = {
       name,
       checked: false,
       todoId: id || '',
     };
 
-    const taskResponse = await taskService.saveTask(newTask);
+    const taskResponse = await taskService.addTask(newTask);
     id && dispatch(TodoStoreFacade.addTask(id, taskResponse));
   };
 

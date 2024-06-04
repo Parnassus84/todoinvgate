@@ -1,6 +1,6 @@
 import { ITask } from '../../../models';
 import { HttpApi } from '../../http/http.api';
-import { ISaveTaskParams, ITasksResponse } from '../interface/task.dto';
+import { IAddTaskParams, ITasksResponse } from '../interface/task.dto';
 
 export const taskData = {
   getTask: async (todoId: string): Promise<ITasksResponse> => {
@@ -9,7 +9,7 @@ export const taskData = {
     ).then((response) => response.json());
     return Promise.resolve(response);
   },
-  saveTask: async (params: ISaveTaskParams): Promise<ITask> => {
+  addTask: async (params: IAddTaskParams): Promise<ITask> => {
     const requestOptions = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
