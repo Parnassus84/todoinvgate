@@ -1,60 +1,16 @@
 {
   "todos": [
     {
-      "name": "sdfsdfsdffdsf",
-      "id": "080e"
-    },
-    {
-      "id": "e22e",
-      "name": "safsfsdf"
-    },
-    {
-      "id": "c24c",
-      "name": "dgdsfgdfg"
-    },
-    {
-      "id": "4ffa",
-      "name": "woriuwerwer"
-    },
-    {
-      "id": "9504",
-      "name": "Hola"
-    },
-    {
-      "id": "46ca",
-      "name": "sdfsdfsdfsdfsdfsdff"
+      "id": "1",
+      "name": "First Todo"
     }
   ],
   "tasks": [
     {
-      "id": "20bf",
-      "name": "primera",
+      "id": "b947",
+      "name": "Tarea 1",
       "checked": true,
-      "todoId": "e22e"
-    },
-    {
-      "id": "e764",
-      "name": "segunda",
-      "checked": false,
-      "todoId": "e22e"
-    },
-    {
-      "id": "044e",
-      "name": "hola",
-      "checked": false,
-      "todoId": "46ca"
-    },
-    {
-      "id": "7839",
-      "name": "Hola",
-      "checked": false,
-      "todoId": "080e"
-    },
-    {
-      "id": "929f",
-      "name": "Hola2222",
-      "checked": false,
-      "todoId": "080e"
+      "todoId": null
     }
   ]
 }

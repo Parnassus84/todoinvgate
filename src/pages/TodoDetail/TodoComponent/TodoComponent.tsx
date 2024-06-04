@@ -22,7 +22,7 @@ export const TodoComponent = ({
 }: Props) => {
   return (
     <div className="self-center w-full p-10">
-      <AddTask className="mb-3 text-xl text-center" addTask={onAddTask} />
+      <AddTask className="mb-3 text-xl text-center" addTask={onAddTask}/>
       <FilterTask className="mb-3 text-xl" filterBy={onFilterBy} />
       <TodoList
         list={tasks || []}

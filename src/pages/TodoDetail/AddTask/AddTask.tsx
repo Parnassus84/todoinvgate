@@ -33,9 +33,9 @@ export const AddTask: FC<Props> = ({ addTask, ...restProps }) => {
 
   return (
     <div {...restProps}>
-      <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
+      <form onSubmit={handleSubmit(onSubmit)} autoComplete="off" data-test="formAddtask">
         <TextField
-          {...register('name')}
+          {...register('name')}          
           label="Agrega una tarea"
           error={!!watchValue.name && !!errors.name}
           helperText={errors.name?.message}

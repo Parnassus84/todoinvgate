@@ -103,7 +103,7 @@ const TodoDetailPage: FC = () => {
             >
               {`TO-DO ${selectedTodo?.name}`}
             </Typography>
-            <Button color="inherit" onClick={() => gotHome()}>
+            <Button color="inherit" onClick={() => gotHome()} data-test="buttonHome">
               Home
             </Button>
           </Header>

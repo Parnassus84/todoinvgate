@@ -15,7 +15,7 @@ export const TodoItem: FC<Props> = ({
   deleted,
 }) => {
   return (
-    <div className="flex align-center">
+    <div className="flex align-center" data-test="itemTask">
       <Checkbox checked={isChecked} onChange={onChecked} />
       <div className={`self-center flex-1 ${isChecked ? 'line-through' : ''}`}>
         {name}
