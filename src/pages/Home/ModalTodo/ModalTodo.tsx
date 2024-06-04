@@ -65,6 +65,7 @@ export const ModalTodo = ({ showModal, handleClose, submit, todo }: Props) => {
             helperText={errors.name?.message}
             size="small"
             fullWidth
+            data-testid="inputModal"
           />
         </form>
       </Box>

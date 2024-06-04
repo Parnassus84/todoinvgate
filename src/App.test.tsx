@@ -5,14 +5,13 @@ import App from './App';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import store, { persistor } from './redux';
-import { TodoProvider } from './contexts/provider';
 import { CircularProgress } from '@mui/material';
 
 jest.mock('@mui/material', () => ({
   CircularProgress: jest.fn(() => <div data-testid="loading">Loading...</div>),
 }));
 
-jest.mock('./pages/routes/app-routes', () => ({
+jest.mock('./routes/app-routes', () => ({
   AppRoutes: jest.fn(() => <div>App Routes</div>),
 }));
 
@@ -27,18 +26,15 @@ jest.mock('redux-persist/integration/react', () => ({
 describe('App component', () => {
   it('renders without crashing', () => {
     const view = render(
-      <TodoProvider>
-        <Provider store={store}>
-          <PersistGate loading={null} persistor={persistor}>
-            <Suspense fallback={<CircularProgress />}>
-              <App />
-            </Suspense>
-          </PersistGate>
-        </Provider>
-      </TodoProvider>
+      <Provider store={store}>
+        <PersistGate loading={null} persistor={persistor}>
+          <Suspense fallback={<CircularProgress />}>
+            <App />
+          </Suspense>
+        </PersistGate>
+      </Provider>
     );
 
     expect(view).toBeTruthy();
   });
-
 });

@@ -1,46 +1,198 @@
-# Getting Started with Create React App
+# Todo INVGATE
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Proyecto creado como desafio para ingresar a INVGATE
 
-## Available Scripts
+## Tabla de contenido
+  - [Tecnologías](#tecnologías)
+  - [Pre-requisitos](#pre-requisitos)
+  - [Variables de entorno](#Variables-de-entorno)
+  - [Scripts](#scripts)
+  - [Políticas](#políticas)
+  - [Pautas de contribución](#pautas-de-contribución)
+    - [Branchs](#branchs)
+    - [Commits](#commits)
+    - [Pull requests](#pull-requests)
+  - [Scaffolding](#scaffolding)
+  - [Imágenes en AWS](#imágenes-en-aws)
+  - [Tutoriales](#tutoriales)
+    - [Configurar librería Dali](#configurar-librería-dali)
+    - [Configurar librería MPP-UI](#configurar-librería-mpp-ui)
 
-In the project directory, you can run:
+## Tecnologías
+El stack tecnológico que tiene el proyecto es el siguiente:
+* React: 18.2.0
+* react-router: 6.23.1
+* redux: 9.1.2
+* cypress: 13.10.0
+* @reduxjs/toolkit
 
-### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+  
+## Pre-requisito
+Tener instalado la versión de node **`^20.11.0`**
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## Variables de entorno
+- `.env` - Variables para ambiente.
 
-### `npm test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Scripts
 
-### `npm run build`
+- Iniciar el proyecto LOCAL
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+  - Instalación de dependencias `npm install`
+  - Levantar en local con `npm run start`
+  - El proyecto corre en `http://localhost:5000`
+  - Iniciar el servidor para la base de datos con `npx json-server db.json` que correrá en el puerto 3000
+  - Iniciar Cypress con `npx cypress open`
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+    ```
+    $ npm run start:local
+    ```
 
-### `npm run eject`
+- Compilar el proyecto
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+  ```
+  $ npm build
+  ```
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- Ejecutar las pruebas unitarias `npm run test`
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+  ```
+  $ npm run test
+  ```
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+## Políticas
 
-## Learn More
+> Más detalles en [Coding Style Guide.](/coding-styleguide.md)
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+- Revisar el código en el Pull Request cuidadosamente.
+- Ser muy asertivo en los comentarios de los Pull Requests.
+- Evitar la complejidad en los métodos.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Pautas de contribución
+
+### Branchs
+Al momento de crear el branch debemos tener en consideración el número de ticket y una descripción breve, además de que debe ser una rama limpia del main despues de haber hecho un pull del mismo.
+
+tiene la siguiente nomenclatura 
+
+- Si es un feature: `feature([jira-ticket]): [descripción-breve]`
+- Si es un issue: `bug([jira-ticket]): [descripción-breve]`
+- Si es un hotfix: `hotfix([jira-ticket]): [descripción-breve]`
+- Si es un refactor: `refactor([jira-ticket]): [descripción-breve]`
+
+ejemplo:
+```
+$ git checkout -b "feature(MGG-1293): checkout-payment-types"
+```
+
+### Commits
+Usar commits más atómicos es decir si trabajo sobre una pantalla o contexto considerarlo en mi commit dentro de un parantesis
+
+ejemplo:
+
+```
+$ git commit -am "feat(checkout): added payment types component"
+```
+
+### Pull requests
+Cuando creemos los PR consideremos el numero de ticket de Jira además del tipo de incidencia que es, tiene la siguiente nomenclatura.
+- Si es un feature: `feature([jira-ticket]): [descripción-breve]`
+- Si es un issue: `bug([jira-ticket]): [descripción-breve]`
+- Si es un hotfix: `hotfix([jira-ticket]): [descripción-breve]`
+- Si es un refactor: `refactor([jira-ticket]): [descripción-breve]`
+
+## Scaffolding
+
+En el siguiente detalle podemos revisar el scaffolding a detalle
+
+<details>
+<summary><b>Expandir scaffolding</b></summary>
+
+```scaffolding
+Project/
+├─ coverage/
+├─ cypress/
+├─ node_modules/
+├─ public/
+│ ├─ favicon.ico
+│ ├─ index.html
+│ ├─ robots.txt
+├─ src/
+│ ├─ core/
+│ │ ├─ services/
+│ │ │ ├─ todo/
+│ │ │ │ ├─ todo.service.ts
+│ │ │ │ ├─ interfaces/
+│ │ │ │ │ ├─ index.ts
+│ │ │ │ │ ├─ todo.dto.ts
+│ │ │ │ ├─ helpers, converters, config, etc/
+│ │ │ │ │ ├─ index.ts
+│ │ │ │ ├─ enums/
+│ │ │ │ │ ├─ index.ts
+│ │ │ │ │ ├─ todo.enum.ts
+│ │ │ ├─ index.ts
+│ │ ├─ redux/
+│ │ │ ├─ todo/
+│ │ │ │ ├─ async-thunks/
+│ │ │ │ │ ├─ todo-action-1.ts
+│ │ │ │ │ ├─ todo-action-2.ts
+│ │ │ │ │ ├─ index.ts
+│ │ │ │ ├─ constants.ts
+│ │ │ │ ├─ index.ts
+│ │ │ │ ├─ reducers.ts
+│ │ │ │ ├─ selectors.ts
+│ │ │ │ ├─ slice.ts
+│ │ │ ├─ enhancers.ts
+│ │ │ ├─ epics.ts
+│ │ │ ├─ index.ts
+│ │ │ ├─ middlewares.ts
+│ │ │ ├─ reducers.ts
+│ │ ├─ model/
+│ │ │ ├─ interfaces/
+│ │ │ │ ├─ index.ts
+│ │ │ │ ├─ todo/
+│ │ │ │ │ ├─ index.ts
+│ │ │ │ │ ├─ todo.interface.ts
+│ │ │ ├─ enums/
+│ │ │ │ ├─ todo/
+│ │ │ │ │ ├─ index.ts
+│ │ │ │ │ ├─ todo.enum.ts
+│ │ │ │ ├─ index.ts
+│ │ │ ├─ index.ts
+│ │ ├─ constants/
+│ │ │ ├─ index.ts
+│ │ │ ├─ products.ts
+│ │ ├─ hooks/
+│ │ │ ├─ index.ts
+│ │ │ ├─ hook-1.ts
+│ │ ├─ contexts/
+│ │ │ ├─ index.ts
+│ │ │ ├─ context-1.tsx
+│ ├─ screens/
+│ │ ├─ home/
+│ │ │ ├─ index.ts
+│ │ │ ├─ todo/
+│ │ │ │ ├─ index.ts
+│ │ │ │ ├─ todo.tsx
+│ │ │ │ ├─ todo.scss
+│ │ │ ├─ item-todo/
+│ ├─ shared/
+│ ├─ http/
+│ ├─ assets/
+│ ├─ scss/
+│ ├─ index.css
+│ ├─ index.js
+├─ .gitignore
+├─ package.json
+├─ README.md
+```
+</details>
+
+
+``
+``
+
+### Contributors
+Parnasus84

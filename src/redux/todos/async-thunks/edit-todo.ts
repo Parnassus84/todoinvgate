@@ -13,7 +13,7 @@ export const editTodoAction = createAsyncThunk(
 
 );
 
-export const getTodosReducer: TSliceExtraReducer<ITodoState> = (builder) => {
+export const editTodoReducer: TSliceExtraReducer<ITodoState> = (builder) => {
   builder
     .addCase(editTodoAction.pending, (state) => {
       state.todoLoading = true;

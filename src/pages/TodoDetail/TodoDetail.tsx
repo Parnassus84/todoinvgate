@@ -1,40 +1,43 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { FC, useEffect, useState } from 'react';
 import { Header } from '../../shared/components';
 import { Box, Button, CircularProgress, Typography } from '@mui/material';
 import { TodoComponent } from './TodoComponent/TodoComponent';
-import { useTodo } from '../../contexts/context';
 import { useNavigate, useParams } from 'react-router-dom';
-import { TodoStoreFacade } from '../../contexts/facade';
 import { ITask } from '../../models';
 import AlertDialog from '../../shared/components/AlertDialog/AlertDialog';
 import { FilterBy } from './todo-detail.enum';
 import { IAddTaskParams } from '../../services/task/interface/task.dto';
-import { taskService } from '../../services/task/task.service';
-import { useTasks } from '../../hooks/useTasks';
+import { useAppDispatch, useAppSelector } from '../../redux';
+import { todoSelector } from '../../redux/todos/selectors';
+import {
+  addTaskAction,
+  completedTaskAction,
+  getTasksAction,
+} from '../../redux/todos';
+import { deleteTaskAction } from '../../redux/todos/async-thunks/delete-task';
 
 const TodoDetailPage: FC = () => {
   const { id = '' } = useParams<{ id: string }>();
-  const { state, dispatch } = useTodo();
+  const dispatch = useAppDispatch();
+
   const [taskDelete, setTaskDelete] = useState<ITask>();
   const [showAlertModal, setShowAlertModal] = useState(false);
   const navigate = useNavigate();
-  const selectedTodo = state.todos.find((todo) => todo.id === id);
+  const { tasksLoading } = useAppSelector((state) => state.todoSection);
+  const selectedTodo = useAppSelector(todoSelector(id));
+
   const [tasks, setTasks] = useState<Array<ITask>>([]);
 
-  const { tasks: tasksEntries, loading } = useTasks({ todoId: id });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-
   useEffect(() => {
-    if (selectedTodo && !selectedTodo?.tasks && tasksEntries) {
-      dispatch(TodoStoreFacade.getTasks(id, tasksEntries));
+    if (selectedTodo && !selectedTodo?.tasks) {     
+      dispatch(getTasksAction(id));
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedTodo, tasksEntries]);
+  }, [selectedTodo]);
 
-  useEffect(() => {
+  useEffect(() => {     
     selectedTodo?.tasks && setTasks(selectedTodo.tasks);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedTodo?.tasks]);
+  }, [selectedTodo]);
 
   const addTask = async (name: string) => {
     if (!name) return;
@@ -44,13 +47,11 @@ const TodoDetailPage: FC = () => {
       todoId: id || '',
     };
 
-    const taskResponse = await taskService.addTask(newTask);
-    id && dispatch(TodoStoreFacade.addTask(id, taskResponse));
+    dispatch(addTaskAction(newTask));
   };
 
-  const checkedTask = async (task: ITask) => {
-    const tasksResponse = await taskService.completedTask(task);
-    id && dispatch(TodoStoreFacade.completedTask(id, tasksResponse.id));
+  const completedTask = async (task: ITask) => {
+    dispatch(completedTaskAction(task));
   };
 
   const filterBy = (filter: FilterBy) => {
@@ -68,19 +69,14 @@ const TodoDetailPage: FC = () => {
     setTasks(filteredTasks || []);
   };
 
-  const removeTask = (taskId: string) => {
+  const deleteTask = (taskId: string) => {
     const task = selectedTodo?.tasks?.find((task) => task.id === taskId);
     setTaskDelete(task);
     setShowAlertModal(true);
   };
 
   const confirmDelete = async () => {
-    const tasksResponse = await taskService.deleteTask(
-      taskDelete?.id as string
-    );
-    id &&
-      taskDelete &&
-      dispatch(TodoStoreFacade.removeTask(id, tasksResponse.id));
+    taskDelete && dispatch(deleteTaskAction(taskDelete.id));
     setShowAlertModal(false);
   };
 
@@ -90,7 +86,7 @@ const TodoDetailPage: FC = () => {
 
   return (
     <>
-      {loading ? (
+      {tasksLoading ? (
         <CircularProgress />
       ) : (
         <>
@@ -103,7 +99,11 @@ const TodoDetailPage: FC = () => {
             >
               {`TO-DO ${selectedTodo?.name}`}
             </Typography>
-            <Button color="inherit" onClick={() => gotHome()} data-test="buttonHome">
+            <Button
+              color="inherit"
+              onClick={() => gotHome()}
+              data-test="buttonHome"
+            >
               Home
             </Button>
           </Header>
@@ -115,9 +115,9 @@ const TodoDetailPage: FC = () => {
               <TodoComponent
                 tasks={tasks}
                 onAddTask={addTask}
-                onCheckedTask={checkedTask}
+                onCheckedTask={completedTask}
                 onFilterBy={filterBy}
-                onRemoveTask={removeTask}
+                onRemoveTask={deleteTask}
               />
             </Box>
           </Box>

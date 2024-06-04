@@ -4,20 +4,23 @@ import { ITodoState } from '../state';
 import { SLICE_NAMESPACE } from '../constants';
 import { ITask, ITodo } from '../../../models';
 import { taskService } from '../../../services';
+import { TRootState } from '../../reducers';
 
 export const completedTaskAction = createAsyncThunk(
   `${SLICE_NAMESPACE}/completedTask`,
   async ( params: ITask, { getState } )=> {
     const responseTask = await taskService.completedTask(params);
-    const state = getState() as ITodoState;
-    const indexTodoTask = state.todos.findIndex(
+    const state = getState() as TRootState;
+    
+    const indexTodoTask = state.todoSection.todos.findIndex(
       (item: ITodo) => item.id === responseTask.todoId
     );
     if (indexTodoTask !== -1) {
-      const newTodos = [...state.todos];
-      newTodos[indexTodoTask].tasks = state.todos[indexTodoTask].tasks.map(
+      let newTodos = [...state.todoSection.todos];      
+    
+      const taskList = state.todoSection.todos[indexTodoTask].tasks.map(
         (item: ITask) => {
-          if (item.id === responseTask.id) {
+          if (item.id === responseTask.id) {           
             return {
               ...item,
               checked: !item.checked,
@@ -25,14 +28,15 @@ export const completedTaskAction = createAsyncThunk(
           }
           return item;
         }
-      );
+      );        
+      newTodos[indexTodoTask] = {...newTodos[indexTodoTask], tasks: taskList};
       return newTodos;
     }  
-    return state.todos; 
+    return state.todoSection.todos; 
   }
 );
 
-export const getTodosReducer: TSliceExtraReducer<ITodoState> = (builder) => {
+export const completedTaskReducer: TSliceExtraReducer<ITodoState> = (builder) => {
   builder
     .addCase(completedTaskAction.pending, (state) => {     
       state.taskLoading = true;
@@ -43,7 +47,7 @@ export const getTodosReducer: TSliceExtraReducer<ITodoState> = (builder) => {
       state.taskLoading = false;
       state.error = null;
     })
-    .addCase(completedTaskAction.rejected, (state, { error }: any) => {
+    .addCase(completedTaskAction.rejected, (state, { error }: any) => {     
       state.taskLoading = false;
       state.error = error;
     });

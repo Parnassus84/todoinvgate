@@ -5,7 +5,7 @@ describe('App', () => {
       id: '1',
       name: 'First Todo',
     });
-  });
+  });  
 
   it('Should display detail Todo Page', () => {
     cy.visit('/');

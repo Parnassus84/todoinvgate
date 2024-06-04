@@ -4,13 +4,14 @@ import { ITodoState } from '../state';
 import { SLICE_NAMESPACE } from '../constants';
 import { taskService } from '../../../services';
 import { ITodo } from '../../../models';
+import { TRootState } from '../../reducers';
 
 export const getTasksAction = createAsyncThunk(
   `${SLICE_NAMESPACE}/getTasks`,
   async (id: string, { getState }) => {
     const tasks = await taskService.getTasks(id);
-    const state = getState() as ITodoState;
-    const todos = state.todos.map((item: ITodo) => {
+    const state = getState() as TRootState;
+    const todos = state.todoSection.todos.map((item: ITodo) => {
       if (item.id === id) {
         return {
           ...item,
@@ -23,7 +24,7 @@ export const getTasksAction = createAsyncThunk(
   }
 );
 
-export const getTodosReducer: TSliceExtraReducer<ITodoState> = (builder) => {
+export const getTasksReducer: TSliceExtraReducer<ITodoState> = (builder) => {
   builder
     .addCase(getTasksAction.pending, (state) => {
       state.tasksLoading = true;

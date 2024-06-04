@@ -4,21 +4,24 @@ import { Header } from '../../shared/components';
 import { TodoLists } from './TodoLists/TodoLists';
 import { ModalTodo } from './ModalTodo/ModalTodo';
 import { IForm } from './models';
-import { useTodo } from '../../contexts/context';
-import { TodoStoreFacade } from '../../contexts/facade';
 import { ITodo } from '../../models';
 import AlertDialog from '../../shared/components/AlertDialog/AlertDialog';
 import { useNavigate } from 'react-router-dom';
-import { todoService } from '../../services/todo/todo.service';
+import {
+  addTodoAction,
+  deleteTodoAction,
+  editTodoAction,
+} from '../../redux/todos';
+
+import { useAppDispatch, useAppSelector } from '../../redux';
 
 const HomePage = () => {
-  const {
-    state: { todos, loadingTodos },
-    dispatch,
-  } = useTodo();
+  const { todos, loading } = useAppSelector((state) => state.todoSection);
+
   const [todoEdit, setTodoEdit] = useState<ITodo | undefined>(undefined);
   const [todoDelete, setTodoDelete] = useState<ITodo | undefined>(undefined);
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   const [showModal, setShowModal] = useState(false);
   const [showAlertModal, setShowAlertModal] = useState(false);
@@ -28,15 +31,11 @@ const HomePage = () => {
     setShowModal(false);
   };
   const saveTodo = async (name: string) => {
-    const response = await todoService.addTodo({ name });
-    const todo = { ...response, tasks: [] } as ITodo;
-    dispatch(TodoStoreFacade.addTodo(todo));
+    dispatch(addTodoAction({ name }));
   };
 
   const editTodo = async (id: string, name: string) => {
-    const todo = await todoService.updateTodo(id, name);
-    if (todo.id && todo.name)
-      dispatch(TodoStoreFacade.editTodo(todo.id, todo.name));
+    dispatch(editTodoAction({ id, name }));
   };
 
   const removeTodo = (todo: ITodo) => {
@@ -46,8 +45,7 @@ const HomePage = () => {
 
   const confirmDelete = async () => {
     if (!todoDelete) return;
-    await todoService.deleteTodo(todoDelete.id);
-    dispatch(TodoStoreFacade.removeTodo(todoDelete.id));
+    dispatch(deleteTodoAction(todoDelete.id));
     setShowAlertModal(false);
   };
 
@@ -67,7 +65,7 @@ const HomePage = () => {
 
   return (
     <>
-      {loadingTodos ? (
+      {loading ? (
         <CircularProgress />
       ) : (
         <>
