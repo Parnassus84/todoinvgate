@@ -1,12 +1,12 @@
 import React, { FC, useEffect, useState } from 'react';
-import { Header } from '../Shared';
+import { Header } from '../../shared/components';
 import { Box, Button, CircularProgress, Typography } from '@mui/material';
 import { TodoComponent } from './TodoComponent/TodoComponent';
 import { useTodo } from '../../contexts/context';
 import { useNavigate, useParams } from 'react-router-dom';
 import { TodoStoreFacade } from '../../contexts/facade';
 import { ITask } from '../../models';
-import AlertDialog from '../Shared/components/AlertDialog/AlertDialog';
+import AlertDialog from '../../shared/components/AlertDialog/AlertDialog';
 import { FilterBy } from './todo-detail.enum';
 import { ISaveTaskParams } from '../../services/task/interface/task.dto';
 import { taskService } from '../../services/task/task.service';

@@ -1,5 +1,5 @@
 import { HttpApi } from '../../http/http.api';
-import { ISaveTodoParams, IGetTodosResponse, ISaveTodoResponse, ITodoResponse } from '../interfaces/todo.dto';
+import { IAddTodoParams, IGetTodosResponse, IAddTodoResponse, ITodoResponse } from '../interfaces/todo.dto';
 
 export const todoData = {
   getTodos: async (): Promise<IGetTodosResponse> => {
@@ -8,7 +8,7 @@ export const todoData = {
     ).then((response) => response.json());
     return Promise.resolve(response);
   },
-  saveTodo: async (params: ISaveTodoParams): Promise<ISaveTodoResponse> => {
+  saveTodo: async (params: IAddTodoParams): Promise<IAddTodoResponse> => {
     const requestOptions = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },

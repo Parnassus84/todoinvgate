@@ -1,5 +1,5 @@
 import React, { Suspense } from 'react';
-import { AppRoutes } from './pages/routes/app-routes';
+import { AppRoutes } from './routes/app-routes';
 import { TodoProvider } from './contexts/provider';
 import { CircularProgress } from '@mui/material';
 import { Provider } from 'react-redux';

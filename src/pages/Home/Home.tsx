@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { Typography, Box, Button, CircularProgress } from '@mui/material';
-import { Header } from '../Shared';
+import { Header } from '../../shared/components';
 import { TodoLists } from './TodoLists/TodoLists';
 import { ModalTodo } from './ModalTodo/ModalTodo';
 import { IForm } from './models';
 import { useTodo } from '../../contexts/context';
 import { TodoStoreFacade } from '../../contexts/facade';
 import { ITodo } from '../../models';
-import AlertDialog from '../Shared/components/AlertDialog/AlertDialog';
+import AlertDialog from '../../shared/components/AlertDialog/AlertDialog';
 import { useNavigate } from 'react-router-dom';
 import { todoService } from '../../services/todo/todo.service';
 
@@ -28,7 +28,7 @@ const HomePage = () => {
     setShowModal(false);
   };
   const saveTodo = async (name: string) => {
-    const response = await todoService.saveTodo({ name });
+    const response = await todoService.addTodo({ name });
     const todo = { ...response, tasks: [] } as ITodo;
     dispatch(TodoStoreFacade.addTodo(todo));
   };
