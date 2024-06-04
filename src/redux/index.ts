@@ -3,6 +3,7 @@ import { persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import { TRootState, rootReducer } from "./reducers";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
+import { logger } from "./middlware";
 
 
 const persistConfig = {
@@ -19,7 +20,7 @@ const store = configureStore({
   middleware: (getDefaultMiddleware) => {
     return getDefaultMiddleware({
       serializableCheck: false
-  });
+  }).concat(logger);
   }
 })
 
