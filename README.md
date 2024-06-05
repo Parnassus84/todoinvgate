@@ -41,6 +41,7 @@ Tener instalado la versión de node **`^20.11.0`**
 
   - Instalación de dependencias `npm install`
   - Levantar en local con `npm run start`
+  - Crear .env con `REACT_APP_API_URL=http://localhost:3000/`
   - El proyecto corre en `http://localhost:5000`
   - Iniciar el servidor para la base de datos con `npx json-server db.json` que correrá en el puerto 3000
   - Iniciar Cypress con `npx cypress open`
